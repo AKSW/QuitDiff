@@ -1,8 +1,8 @@
 from abc import ABCMeta
 from QuitDiffSerializer import QuitDiffSerializer
 
-class EccpatchDiff(metaclass=ABCMeta):
+class EccrevDiff(metaclass=ABCMeta):
     def serialize(self, add, delete):
         return "ecc patch"
 
-EccpatchDiff.register(QuitDiffSerializer)
+EccrevDiff.register(QuitDiffSerializer)
