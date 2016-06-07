@@ -4,6 +4,8 @@ import rdflib
 from rdflib import ConjunctiveGraph, compare
 from QuitDiffSerializer import QuitDiffSerializer
 from importlib import import_module
+from os import listdir
+from os.path import isfile, isdir, join
 
 class QuitDiff:
 
@@ -17,11 +19,23 @@ class QuitDiff:
 
 
     def readIsomorphicGraph(self, file):
-        format = rdflib.util.guess_format(file)
         graph = ConjunctiveGraph()
-        graph.load(file, format=format)
 
-        print("file:", file)
+        # check if we handle a directory or a seperate file
+        if isdir(file):
+            # for a better readability rename variable
+            dir = file
+            onlyfiles = [f for f in listdir(dir) if isfile(join(dir, f))]
+            for file in onlyfiles:
+                absfile = join(dir, file)
+                format = rdflib.util.guess_format(absfile)
+                if format is not None:
+                    graph.parse(absfile, format=format)
+        elif isfile(file):
+            format = rdflib.util.guess_format(file)
+            if format is not None:
+                graph.load(file, format=format)
+
         graphDict = {}
         for subgraph in graph.contexts():
             # TODO we have to copy all the triples to a new ConjunctiveGraph
