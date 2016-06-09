@@ -48,11 +48,11 @@ class QuitDiff:
             # and thus doesn't support quads
             triples = subgraph.triples((None, None, None))
             print('Type', type(subgraph.identifier), 'Identifier', subgraph.identifier)
-            if isinstance(subgraph.identifier, BNode) or subgraph.identifier is 'default':
+            if isinstance(subgraph.identifier, BNode) or str(subgraph.identifier) == 'default':
                 print('Ja ich bin default')
                 subgraphConjunctive = contextDict['default']
             else:
-                print('Nein ich bin default')
+                print('Nein ich bin nicht default')
                 try:
                     subGraphConjunctive = contextDict[subgraph.identifier]
                 except:

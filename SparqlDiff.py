@@ -7,15 +7,14 @@ class SparqlDiff(metaclass=ABCMeta):
         deleteQuadPattern = ""
         insertQuadPattern = ""
         for graphUri, graph in delete.items():
-            print('GraphUri', graphUri)
             if len(graph) > 0:
-                if graphUri is not 'default':
+                if str(graphUri) != 'default':
                     deleteQuadPattern += "\ngraph <%s> {\n%s\n}\n" % (graphUri, graph.serialize(format="nt").decode("utf-8").strip())
                 else:
                     deleteQuadPattern += "\n%s\n" % (graph.serialize(format="nt").decode("utf-8").strip())
         for graphUri, graph in add.items():
             if len(graph) > 0:
-                if graphUri is not 'default':
+                if str(graphUri) != 'default':
                     insertQuadPattern += "\ngraph <%s> {\n%s\n}\n" % (graphUri, graph.serialize(format="nt").decode("utf-8").strip())
                 else:
                     insertQuadPattern += "\n%s\n" % (graph.serialize(format="nt").decode("utf-8").strip())
