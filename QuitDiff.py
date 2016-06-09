@@ -73,12 +73,19 @@ class QuitDiff:
 
         return graphDict
 
+    def diff (self, path, oldFile, newFile, diffFormat='sparql'):
+        print("path:", path)
+        print("oldFile:", oldFile)
+        print("newFile:", newFile)
+        print("diffFormat:", diffFormat)
+        self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
 
-    def diff (self, local, remote, merged, base, diffFormat='sparql'):
+    def difftool (self, local, remote, merged, base, diffFormat='sparql'):
         print("local:", local)
         print("remote:", remote)
         print("merged:", merged)
         print("base:", base)
+        print("diffFormat:", diffFormat)
 
         if local:
             self.local = self.readIsomorphicGraph(local)
