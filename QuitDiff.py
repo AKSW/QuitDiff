@@ -1,7 +1,8 @@
 
 
 import rdflib
-from rdflib import ConjunctiveGraph, compare
+from rdflib import ConjunctiveGraph, compare, BNode, Graph
+from rdflib.store import Store
 from QuitDiffSerializer import QuitDiffSerializer
 from importlib import import_module
 from os import listdir
@@ -19,7 +20,7 @@ class QuitDiff:
 
 
     def readIsomorphicGraph(self, file):
-        graph = ConjunctiveGraph()
+        graph = ConjunctiveGraph(identifier='default')
 
         # check if we handle a directory or a seperate file
         if isdir(file):
@@ -29,25 +30,47 @@ class QuitDiff:
             for file in onlyfiles:
                 absfile = join(dir, file)
                 format = rdflib.util.guess_format(absfile)
+
                 if format is not None:
-                    graph.parse(absfile, format=format)
+                    graph.parse(absfile, publicID='default', format=format)
+
         elif isfile(file):
             format = rdflib.util.guess_format(file)
             if format is not None:
-                graph.load(file, format=format)
+                graph.parse(absfile, format=format)
 
-        graphDict = {}
+        contextDict = {}
+        contextDict['default'] = Graph()
+
         for subgraph in graph.contexts():
             # TODO we have to copy all the triples to a new ConjunctiveGraph
             # because https://rdflib.readthedocs.io/en/stable/_modules/rdflib/compare.html takes the complete store
             # and thus doesn't support quads
             triples = subgraph.triples((None, None, None))
-            subgraphConjunctive = ConjunctiveGraph()
+            print('Type', type(subgraph.identifier), 'Identifier', subgraph.identifier)
+            if isinstance(subgraph.identifier, BNode) or subgraph.identifier is 'default':
+                print('Ja ich bin default')
+                subgraphConjunctive = contextDict['default']
+            else:
+                print('Nein ich bin default')
+                try:
+                    subGraphConjunctive = contextDict[subgraph.identifier]
+                except:
+                    contextDict[subgraph.identifier] = ConjunctiveGraph()
+                    subgraphConjunctive = contextDict[subgraph.identifier]
+
             for triple in triples:
                 subgraphConjunctive.add(triple)
             # end TODO hack
 
-            graphDict[subgraph.identifier] = compare.to_isomorphic(subgraphConjunctive)
+            for triple in triples:
+                subgraphConjunctive.add(triple)
+
+        graphDict = {}
+
+        for identifier, graph in contextDict.items():
+            graphDict[identifier] = compare.to_isomorphic(graph)
+
         return graphDict
 
 
