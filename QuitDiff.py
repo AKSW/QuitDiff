@@ -37,7 +37,7 @@ class QuitDiff:
         elif isfile(file):
             format = rdflib.util.guess_format(file)
             if format is not None:
-                graph.parse(absfile, format=format)
+                graph.parse(file, format=format)
 
         contextDict = {}
         contextDict['default'] = Graph()
