@@ -26,7 +26,8 @@ class EccrevDiff(metaclass=ABCMeta):
                 revision = Namespace("urn:revision:" + str(uuid.uuid1()) + ":")
                 g.add( (commit.term(""), eccrev.hasRevision, revision.term("")) )
                 g.add( (revision.term(""), RDF.type, eccrev.Revision) )
-                g.add( (revision.term(""), eccrev.hasRevisionGraph, graphUri) )
+                if str(graphUri) != 'default':
+                    g.add( (revision.term(""), eccrev.hasRevisionGraph, graphUri) )
                 if graphUri in delete.keys() and len(delete[graphUri]) > 0:
                     deleteGraphName = revision.term(":delete")
                     g.add( (revision.term(""), eccrev.deltaDelete, deleteGraphName) )

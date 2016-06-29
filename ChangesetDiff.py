@@ -24,7 +24,8 @@ class ChangesetDiff(metaclass=ABCMeta):
                 diff = Namespace("urn:changeset:" + str(uuid.uuid1()))
                 graphTerm = diff.term("")
                 g.add( (graphTerm, RDF.type, changeset.ChangeSet) )
-                g.add( (graphTerm, changeset.subjectOfChange, graphUri) )
+                if str(graphUri) != 'default':
+                    g.add( (graphTerm, changeset.subjectOfChange, graphUri) )
                 if graphUri in delete.keys() and len(delete[graphUri]) > 0:
                     i = 0
                     for triple in delete[graphUri]:
