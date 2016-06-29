@@ -47,12 +47,9 @@ class QuitDiff:
             # because https://rdflib.readthedocs.io/en/stable/_modules/rdflib/compare.html takes the complete store
             # and thus doesn't support quads
             triples = subgraph.triples((None, None, None))
-            print('Type', type(subgraph.identifier), 'Identifier', subgraph.identifier)
             if isinstance(subgraph.identifier, BNode) or str(subgraph.identifier) == 'default':
-                print('Ja ich bin default')
                 subgraphConjunctive = contextDict['default']
             else:
-                print('Nein ich bin nicht default')
                 try:
                     subGraphConjunctive = contextDict[subgraph.identifier]
                 except:
@@ -74,18 +71,9 @@ class QuitDiff:
         return graphDict
 
     def diff (self, path, oldFile, newFile, diffFormat='sparql'):
-        print("path:", path)
-        print("oldFile:", oldFile)
-        print("newFile:", newFile)
-        print("diffFormat:", diffFormat)
         self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
 
     def difftool (self, local, remote, merged, base, diffFormat='sparql'):
-        print("local:", local)
-        print("remote:", remote)
-        print("merged:", merged)
-        print("base:", base)
-        print("diffFormat:", diffFormat)
 
         if local:
             self.local = self.readIsomorphicGraph(local)
@@ -103,10 +91,8 @@ class QuitDiff:
         remove = {}
 
         graphUris = set(self.local.keys()) | set(self.remote.keys())
-        print ("all available graphs:", graphUris)
 
         for uri in graphUris:
-            print("graph:", uri)
             if uri in self.local.keys() and uri in self.remote.keys():
                 localGraph = self.local[uri]
                 remoteGraph = self.remote[uri]
@@ -123,6 +109,5 @@ class QuitDiff:
         module = diffFormat.title() + "Diff"
         diff = getattr(import_module(module), module)
 
-        print ("")
         diffSerializer = diff()
-        print("serialization:", diffSerializer.serialize(add, remove))
+        print(diffSerializer.serialize(add, remove))

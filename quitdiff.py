@@ -41,5 +41,4 @@ if __name__ == "__main__":
     elif (args.local and args.remote):
         quitdiff.difftool(args.local, args.remote, args.merged, args.base, diffFormat=args.diffFormat)
     else:
-        parser.print_help()
         exit(1)
