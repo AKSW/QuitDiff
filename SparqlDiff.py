@@ -21,7 +21,10 @@ class SparqlDiff(metaclass=ABCMeta):
 
         query = ""
         if deleteQuadPattern:
-            query += "delete data {%s}\n" % (deleteQuadPattern)
+            delimiter = "\n"
+            if insertQuadPattern:
+                delimiter = ";\n"
+            query += "delete data {%s}" % (deleteQuadPattern) + delimiter
         if insertQuadPattern:
             query += "insert data {%s}\n" % (insertQuadPattern)
         return query
