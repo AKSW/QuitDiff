@@ -69,15 +69,6 @@ class QuitDiff:
 
         return graphDict
 
-    def readfile(self, file):
-        content = ''
-        f = open(file, 'r')
-
-        for line in f:
-            content+=line
-
-        return content
-
     def diff (self, path, oldFile, newFile, diffFormat='sparql'):
         self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
 
