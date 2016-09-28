@@ -19,7 +19,7 @@ class QuitDiff:
         True
 
 
-    def readIsomorphicGraph(self, file):
+    def readIsomorphicGraph(self, file, format=None):
         graph = ConjunctiveGraph(identifier='default')
 
         # check if we handle a directory or a seperate file
@@ -34,10 +34,10 @@ class QuitDiff:
                 if format is not None:
                     graph.parse(absfile, publicID='default', format=format)
 
-        elif isfile(file):
-            format = rdflib.util.guess_format(file)
+        else:
+            # format = rdflib.util.guess_format(file)
             if format is not None:
-                graph.parse(file, format=format)
+                graph.parse(data=file, format=format, publicID='default')
 
         contextDict = {}
         contextDict['default'] = Graph()
@@ -60,9 +60,6 @@ class QuitDiff:
                 subgraphConjunctive.add(triple)
             # end TODO hack
 
-            for triple in triples:
-                subgraphConjunctive.add(triple)
-
         graphDict = {}
 
         for identifier, graph in contextDict.items():
@@ -70,22 +67,51 @@ class QuitDiff:
 
         return graphDict
 
+    def streamfile(self, file):
+        content = ''
+        f = open(file, 'r')
+
+        for line in f:
+            content+=line
+
+        return content
+
     def diff (self, path, oldFile, newFile, diffFormat='sparql'):
         self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
 
     def difftool (self, local, remote, merged, base, diffFormat='sparql'):
 
         if local:
-            self.local = self.readIsomorphicGraph(local)
+            if isfile(local):
+                data = self.streamfile(local)
+                format = rdflib.util.guess_format(local)
+                self.local = self.readIsomorphicGraph(data, format)
+            else:
+                self.local = self.readIsomorphicGraph(local)
 
         if remote:
-            self.remote = self.readIsomorphicGraph(remote)
+            if isfile(remote):
+                data = self.streamfile(remote)
+                format = rdflib.util.guess_format(remote)
+                self.remote = self.readIsomorphicGraph(data, format)
+            else:
+                self.remote = self.readIsomorphicGraph(remote)
 
         if merged:
-            self.merged = self.readIsomorphicGraph(merged)
+            if isfile(merged):
+                data = self.streamfile(merged)
+                format = rdflib.util.guess_format(merged)
+                self.merged = self.readIsomorphicGraph(data, format)
+            else:
+                self.merged = self.readIsomorphicGraph(merged)
 
         if base:
-            self.base = self.readIsomorphicGraph(base)
+            if isfile(base):
+                data = self.streamfile(base)
+                format = rdflib.util.guess_format(base)
+                self.base = self.readIsomorphicGraph(data, format)
+            else:
+                self.base = self.readIsomorphicGraph(base)
 
         add = {}
         remove = {}
