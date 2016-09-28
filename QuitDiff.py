@@ -5,7 +5,7 @@ from rdflib import ConjunctiveGraph, compare, BNode, Graph
 from rdflib.store import Store
 from QuitDiffSerializer import QuitDiffSerializer
 from importlib import import_module
-from os import listdir
+from os import listdir, walk
 from os.path import isfile, isdir, join
 
 class QuitDiff:
@@ -14,41 +14,43 @@ class QuitDiff:
     remote = None
     merged = None
     base = None
+    nsQuitDiff = 'http://quitdiff.default/'
 
     def __init__ (self):
         True
 
 
     def readIsomorphicGraph(self, file):
-        graph = ConjunctiveGraph(identifier='default')
+        graph = ConjunctiveGraph(identifier='')
 
         # check if we handle a directory or a seperate file
         if isdir(file):
             # for a better readability rename variable
             dir = file
-            onlyfiles = [f for f in listdir(dir) if isfile(join(dir, f))]
-            for file in onlyfiles:
-                absfile = join(dir, file)
-                format = rdflib.util.guess_format(absfile)
+            for path, dirs, files in walk(file):
+                for file in files:
+                    absfile = join(path, file)
+                    format = rdflib.util.guess_format(absfile)
 
-                if format is not None:
-                    graph.parse(absfile, publicID='default', format=format)
+                    if format is not None:
+                        graph.parse(absfile, format=format, publicID=self.nsQuitDiff)
 
         elif isfile(file):
             format = rdflib.util.guess_format(file)
+
             if format is not None:
-                graph.parse(file, format=format)
+                graph.parse(file, format=format, publicID=self.nsQuitDiff)
 
         contextDict = {}
-        contextDict['default'] = Graph()
+        contextDict[self.nsQuitDiff] = Graph()
 
         for subgraph in graph.contexts():
             # TODO we have to copy all the triples to a new ConjunctiveGraph
             # because https://rdflib.readthedocs.io/en/stable/_modules/rdflib/compare.html takes the complete store
             # and thus doesn't support quads
             triples = subgraph.triples((None, None, None))
-            if isinstance(subgraph.identifier, BNode) or str(subgraph.identifier) == 'default':
-                subgraphConjunctive = contextDict['default']
+            if isinstance(subgraph.identifier, BNode) or str(subgraph.identifier) == self.nsQuitDiff:
+                subgraphConjunctive = contextDict[self.nsQuitDiff]
             else:
                 try:
                     subGraphConjunctive = contextDict[subgraph.identifier]
@@ -60,15 +62,21 @@ class QuitDiff:
                 subgraphConjunctive.add(triple)
             # end TODO hack
 
-            for triple in triples:
-                subgraphConjunctive.add(triple)
-
         graphDict = {}
 
         for identifier, graph in contextDict.items():
             graphDict[identifier] = compare.to_isomorphic(graph)
 
         return graphDict
+
+    def readfile(self, file):
+        content = ''
+        f = open(file, 'r')
+
+        for line in f:
+            content+=line
+
+        return content
 
     def diff (self, path, oldFile, newFile, diffFormat='sparql'):
         self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)

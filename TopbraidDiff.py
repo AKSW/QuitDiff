@@ -30,7 +30,7 @@ class TopbraidDiff(metaclass=ABCMeta):
             if (graphUri in delete.keys() and len(delete[graphUri]) > 0) or (graphUri in add.keys() and len(add[graphUri]) > 0):
                 changeset = Namespace("urn:diff:" + str(uuid.uuid1()))
                 graphTerm = changeset.term("")
-                if str(graphUri) != 'default':
+                if str(graphUri) != 'http://quitdiff.default/':
                     g.add( (graphTerm, OWL.imports, graphUri, graphTerm) )
                 g.add( (graphTerm, RDF.type, OWL.Ontology, graphTerm) )
                 g.add( (graphTerm, OWL.imports, diff.term(""), graphTerm) )
