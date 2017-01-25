@@ -1,5 +1,5 @@
 import argparse
-import .QuitDiff import QuitDiff
+from .QuitDiff import QuitDiff
 
 def main(args=None):
 
