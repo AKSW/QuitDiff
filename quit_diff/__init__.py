@@ -1,24 +1,8 @@
-#!/usr/bin/env python3
-
 import argparse
-from QuitDiff import QuitDiff
+import .QuitDiff import QuitDiff
 
-if __name__ == "__main__":
+def main(args=None):
 
-    # command line parameters
-    # This tool can be used for git-diff or as git-difftool
-    # git-diff:
-    #   if using as git-diff, the parameters are:
-    #   path old-file old-hex old-mode new-file new-hex new-mode
-    # git-difftool:
-    #   https://git-scm.com/docs/git-difftool
-    #   $LOCAL is set to the name of the temporary file containing the contents of the diff pre-image and
-    #   $REMOTE is set to the name of the temporary file containing the contents of the diff post-image.
-    #   $MERGED is the name of the file which is being compared.
-    #   $BASE is provided for compatibility with custom merge tool commands and has the same value as $MERGED.
-    #
-    # local is the old version
-    # remote is the new version
     parser = argparse.ArgumentParser()
     parser.add_argument('path', nargs='?', type=str)
     parser.add_argument('oldFile', nargs='?', type=str)

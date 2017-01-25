@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 import rdflib
 from rdflib import ConjunctiveGraph, compare, BNode, Graph
@@ -8,6 +8,7 @@ from importlib import import_module
 from os import listdir
 from os.path import isfile, isdir, join
 
+
 class QuitDiff:
 
     local = None
@@ -15,9 +16,8 @@ class QuitDiff:
     merged = None
     base = None
 
-    def __init__ (self):
+    def __init__(self):
         True
-
 
     def readIsomorphicGraph(self, file):
         graph = ConjunctiveGraph(identifier='default')
