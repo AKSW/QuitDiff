@@ -1,12 +1,16 @@
-
+#!/usr/bin/env python3
 
 import rdflib
 from rdflib import ConjunctiveGraph, compare, BNode, Graph
 from rdflib.store import Store
-from QuitDiffSerializer import QuitDiffSerializer
 from importlib import import_module
 from os import listdir, walk
 from os.path import isfile, isdir, join
+
+
+class QuitDiffSerializer:
+    def serialize(self, add, delete):
+        return NotImplemented
 
 class QuitDiff:
 
@@ -105,7 +109,7 @@ class QuitDiff:
                 True
 
         module = diffFormat.title() + "Diff"
-        diff = getattr(import_module(module), module)
+        diff = getattr(import_module('quit_diff.serializer.' + module), module)
 
         diffSerializer = diff()
         print(diffSerializer.serialize(add, remove))
