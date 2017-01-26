@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from QuitDiffSerializer import QuitDiffSerializer
+from .QuitDiffSerializer import QuitDiffSerializer
 from rdflib import Namespace, ConjunctiveGraph
 from rdflib.namespace import RDF, NamespaceManager
 import uuid

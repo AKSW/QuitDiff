@@ -3,7 +3,7 @@
 import rdflib
 from rdflib import ConjunctiveGraph, compare, BNode, Graph
 from rdflib.store import Store
-from QuitDiffSerializer import QuitDiffSerializer
+from .QuitDiffSerializer import QuitDiffSerializer
 from importlib import import_module
 from os import listdir
 from os.path import isfile, isdir, join
