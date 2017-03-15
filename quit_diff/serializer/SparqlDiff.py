@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from .QuitDiffSerializer import QuitDiffSerializer
+from ..QuitDiff import QuitDiffSerializer
 
 class SparqlDiff(metaclass=ABCMeta):
     def serialize(self, add, delete):

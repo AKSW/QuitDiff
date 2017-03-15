@@ -1,5 +1,6 @@
 import argparse
 from .QuitDiff import QuitDiff
+from .QuitDiffSerializer2 import QuitDiffSerializer
 
 def main(args=None):
 
