@@ -16,9 +16,8 @@ class QuitDiff:
     base = None
     nsQuitDiff = 'http://quitdiff.default/'
 
-    def __init__ (self):
+    def __init__(self):
         True
-
 
     def readIsomorphicGraph(self, file):
         graph = ConjunctiveGraph(identifier='')
@@ -69,10 +68,10 @@ class QuitDiff:
 
         return graphDict
 
-    def diff (self, path, oldFile, newFile, diffFormat='sparql'):
+    def diff(self, path, oldFile, newFile, diffFormat='sparql'):
         self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
 
-    def difftool (self, local, remote, merged, base, diffFormat='sparql'):
+    def difftool(self, local, remote, merged, base, diffFormat='sparql'):
 
         if local:
             self.local = self.readIsomorphicGraph(local)
@@ -98,11 +97,11 @@ class QuitDiff:
                 in_both, in_first, in_second = compare.graph_diff(localGraph, remoteGraph)
                 add[uri] = in_second
                 remove[uri] = in_first
-            elif uri in self.local.keys() :
+            elif uri in self.local.keys():
                 remove[uri] = self.local[uri]
-            elif uri in self.remote.keys() :
+            elif uri in self.remote.keys():
                 add[uri] = self.remote[uri]
-            else :
+            else:
                 True
 
         module = diffFormat.title() + "Diff"

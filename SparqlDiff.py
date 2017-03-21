@@ -1,7 +1,10 @@
 from abc import ABCMeta
 from QuitDiffSerializer import QuitDiffSerializer
 
+
 class SparqlDiff(metaclass=ABCMeta):
+    """Serialize RDF deltas using Sparql Insert/Delete Queries."""
+
     def serialize(self, add, delete):
 
         deleteQuadPattern = ""
@@ -28,5 +31,6 @@ class SparqlDiff(metaclass=ABCMeta):
         if insertQuadPattern:
             query += "insert data {%s}\n" % (insertQuadPattern)
         return query
+
 
 SparqlDiff.register(QuitDiffSerializer)
