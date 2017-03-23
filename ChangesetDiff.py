@@ -24,7 +24,7 @@ class ChangesetDiff(metaclass=ABCMeta):
                 diff = Namespace("urn:changeset:" + str(uuid.uuid1()))
                 graphTerm = diff.term("")
                 g.add( (graphTerm, RDF.type, changeset.ChangeSet) )
-                if str(graphUri) != 'default':
+                if str(graphUri) != 'http://quitdiff.default/':
                     g.add( (graphTerm, changeset.subjectOfChange, graphUri) )
                 if graphUri in delete.keys() and len(delete[graphUri]) > 0:
                     i = 0
