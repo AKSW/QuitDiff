@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import rdflib
 from rdflib import ConjunctiveGraph, compare, BNode, Graph
 from rdflib.store import Store

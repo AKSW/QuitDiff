@@ -10,7 +10,7 @@ setup(
     author_email='arndt@informatik.uni-leipzig.de, radtke@informatik.uni-leipzig.de',
     license='GNU General Public License Version 3',
     url='https://github.com/AKSW/QuitDiff',
-    download_url='https://github.com/AKSW/QuitDiff/archive/0.1.tar.gz',
+    download_url='https://github.com/AKSW/QuitDiff/archive/master.tar.gz',
     install_requires=[
         'rdflib==4.2.1'
     ],
