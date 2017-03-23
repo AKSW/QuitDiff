@@ -39,6 +39,23 @@ git diff can then called with one of the following commands
     $ git diff
     $ git diff HEAD~0..HEAD~2
 
+
+# Command line parameters
+This tool can be used for git-diff or as git-difftool
+
+## git-diff:
+  if using as git-diff, the parameters are: `path old-file old-hex old-mode new-file new-hex new-mode`
+
+## git-difftool:
+https://git-scm.com/docs/git-difftool
+* $LOCAL is set to the name of the temporary file containing the contents of the diff pre-image and
+* $REMOTE is set to the name of the temporary file containing the contents of the diff post-image.
+* $MERGED is the name of the file which is being compared.
+* $BASE is provided for compatibility with custom merge tool commands and has the same value as $MERGED.
+
+* local is the old version
+* remote is the new version
+
 # License
 
 Copyright (C) 2017 Natanael Arndt <http://aksw.org/NatanaelArndt> and Norman Radtke <http://aksw.org/NormanRadtke>
