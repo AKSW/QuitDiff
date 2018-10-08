@@ -1,5 +1,13 @@
 # Quit Diff
 
+## Requirements
+
+For using QuitDiff you need to have python version 3 installed.
+
+To install the required packages use pip:
+
+    pip install -r requirements.txt
+
 ## Use as `git-difftool`
 
 Add one of the following sections to you `~/.gitconfig` (in your home directory) or `.git/config` (in your git working directory).
