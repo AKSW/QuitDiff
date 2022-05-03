@@ -51,7 +51,7 @@ class TopbraidDiff(metaclass=ABCMeta):
                         g.add((insertGraphName, RDF.object, triple[2], graphTerm))
                         i += 1
 
-        return g.serialize(format="trig").decode("utf-8")
+        return g.serialize(format="trig")
 
 
 TopbraidDiff.register(QuitDiffSerializer)
