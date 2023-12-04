@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "quit-diff"
+version = "1.0.1"
+description = "Quit Diff is a comparison tool for semantic web data, it can be used as git difftool for RDF data as well."
+authors = ["Norman Radtke <http://aksw.org/NormanRadtke>","Natanael Arndt <http://aksw.org/NatanaelArndt>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://github.com/AKSW/QuitDiff"
+repository = "https://github.com/AKSW/QuitDiff"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/AKSW/QuitDiff/issues"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rdflib = "^7.0.0"
+importlib = "^1.0.4"
+
+[tool.poetry.scripts]
+quit-diff = "quit_diff:main"
+quit-difftool = "quit_diff:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -2,11 +2,11 @@
 
 ## Requirements
 
-For using QuitDiff you need to have python version 3 installed.
+For using QuitDiff you need to have python version 3 installed (3.10 or later).
 
 To install the required packages use pip:
 
-    pip install -r requirements.txt
+    pipx install quit-diff
 
 ## Use as `git-difftool`
 
@@ -14,7 +14,6 @@ Add one of the following sections to you `~/.gitconfig` (in your home directory)
 
     [difftool "quitdiff"]
         cmd = quitdiff.py --local=\"$LOCAL\" --remote=\"$REMOTE\" --merged=\"$MERGES\" --base=\"$BASE\"
-
 
     [difftool "quitdiff-sparql"]
         cmd = quitdiff.py --diffFormat sparql --local=\"$LOCAL\" --remote=\"$REMOTE\" --merged=\"$MERGES\" --base=\"$BASE\"
