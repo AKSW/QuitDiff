@@ -1,8 +1,7 @@
 import rdflib
 from rdflib import ConjunctiveGraph, compare, BNode, Graph
-from rdflib.store import Store
 from importlib import import_module
-from os import listdir, walk
+from os import walk
 from os.path import isfile, isdir, join
 
 
@@ -28,9 +27,9 @@ class QuitDiff:
         if isdir(file):
             # for a better readability rename variable
             dir = file
-            for path, dirs, files in walk(file):
-                for file in files:
-                    absfile = join(path, file)
+            for path, dirs, files in walk(dir):
+                for dir_file in files:
+                    absfile = join(path, dir_file)
                     format = rdflib.util.guess_format(absfile)
 
                     if format is not None:
