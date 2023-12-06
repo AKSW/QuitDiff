@@ -1,0 +1,13 @@
+version: '3'
+
+tasks:
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - poetry install
+
+  check:
+    desc: Execute the linter
+    cmds:
+      - poetry run ruff
