@@ -13,22 +13,23 @@ class ChangesetDiff(metaclass=ABCMeta):
     """
 
     def serialize(self, add, delete):
-
         changeset = Namespace("http://purl.org/vocab/changeset/schema#")
 
         g = ConjunctiveGraph()
 
         namespace_manager = NamespaceManager(g)
-        namespace_manager.bind('changeset', changeset, override=False)
+        namespace_manager.bind("changeset", changeset, override=False)
 
         graphUris = set(delete.keys()) | set(add.keys())
 
         for graphUri in graphUris:
-            if (graphUri in delete.keys() and len(delete[graphUri]) > 0) or (graphUri in add.keys() and len(add[graphUri]) > 0):
+            if (graphUri in delete.keys() and len(delete[graphUri]) > 0) or (
+                graphUri in add.keys() and len(add[graphUri]) > 0
+            ):
                 diff = Namespace("urn:changeset:" + str(uuid.uuid1()))
                 graphTerm = diff.term("")
                 g.add((graphTerm, RDF.type, changeset.ChangeSet))
-                if str(graphUri) != 'http://quitdiff.default/':
+                if str(graphUri) != "http://quitdiff.default/":
                     g.add((graphTerm, changeset.subjectOfChange, graphUri))
                 if graphUri in delete.keys() and len(delete[graphUri]) > 0:
                     i = 0

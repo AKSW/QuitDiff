@@ -9,19 +9,19 @@ class QuitDiffSerializer:
     def serialize(self, add, delete):
         return NotImplemented
 
-class QuitDiff:
 
+class QuitDiff:
     local = None
     remote = None
     merged = None
     base = None
-    nsQuitDiff = 'http://quitdiff.default/'
+    nsQuitDiff = "http://quitdiff.default/"
 
     def __init__(self):
         True
 
     def readIsomorphicGraph(self, file):
-        graph = ConjunctiveGraph(identifier='')
+        graph = ConjunctiveGraph(identifier="")
 
         # check if we handle a directory or a seperate file
         if isdir(file):
@@ -49,7 +49,10 @@ class QuitDiff:
             # because https://rdflib.readthedocs.io/en/stable/_modules/rdflib/compare.html takes the complete store
             # and thus doesn't support quads
             triples = subgraph.triples((None, None, None))
-            if isinstance(subgraph.identifier, BNode) or str(subgraph.identifier) == self.nsQuitDiff:
+            if (
+                isinstance(subgraph.identifier, BNode)
+                or str(subgraph.identifier) == self.nsQuitDiff
+            ):
                 subgraphConjunctive = contextDict[self.nsQuitDiff]
             else:
                 try:
@@ -69,11 +72,10 @@ class QuitDiff:
 
         return graphDict
 
-    def diff(self, path, oldFile, newFile, diffFormat='sparql'):
+    def diff(self, path, oldFile, newFile, diffFormat="sparql"):
         self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
 
-    def difftool(self, local, remote, merged, base, diffFormat='sparql'):
-
+    def difftool(self, local, remote, merged, base, diffFormat="sparql"):
         if local:
             self.local = self.readIsomorphicGraph(local)
 
@@ -95,7 +97,9 @@ class QuitDiff:
             if uri in self.local.keys() and uri in self.remote.keys():
                 localGraph = self.local[uri]
                 remoteGraph = self.remote[uri]
-                in_both, in_first, in_second = compare.graph_diff(localGraph, remoteGraph)
+                in_both, in_first, in_second = compare.graph_diff(
+                    localGraph, remoteGraph
+                )
                 add[uri] = in_second
                 remove[uri] = in_first
             elif uri in self.local.keys():
@@ -106,7 +110,7 @@ class QuitDiff:
                 True
 
         module = diffFormat.title() + "Diff"
-        diff = getattr(import_module('quit_diff.serializer.' + module), module)
+        diff = getattr(import_module("quit_diff.serializer." + module), module)
 
         diffSerializer = diff()
         print(diffSerializer.serialize(add, remove))
