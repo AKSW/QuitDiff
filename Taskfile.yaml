@@ -10,4 +10,9 @@ tasks:
   check:
     desc: Execute the linter
     cmds:
-      - poetry run ruff
+      - poetry run ruff check
+
+  format:
+    desc: Run formater
+    cmds:
+      - poetry run ruff format
