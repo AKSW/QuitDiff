@@ -56,8 +56,8 @@ class QuitDiff:
                 subgraphConjunctive = contextDict[self.nsQuitDiff]
             else:
                 try:
-                    subGraphConjunctive = contextDict[subgraph.identifier]
-                except:
+                    subgraphConjunctive = contextDict[subgraph.identifier]
+                except Exception:
                     contextDict[subgraph.identifier] = ConjunctiveGraph()
                     subgraphConjunctive = contextDict[subgraph.identifier]
 
