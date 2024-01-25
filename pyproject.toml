@@ -17,8 +17,8 @@ rdflib = "^7.0.0"
 click = "^8.1.7"
 
 [tool.poetry.scripts]
-quit-diff = "quit_diff:main"
-quit-difftool = "quit_diff:main"
+quit-diff = "quit_diff:cli"
+quit-git-diff = "quit_diff:git_diff"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.7"

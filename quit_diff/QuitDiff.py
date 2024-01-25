@@ -1,3 +1,5 @@
+from typing import Dict
+
 import rdflib
 from rdflib import ConjunctiveGraph, compare, BNode, Graph
 from importlib import import_module
@@ -16,9 +18,6 @@ class QuitDiff:
     merged = None
     base = None
     nsQuitDiff = "http://quitdiff.default/"
-
-    def __init__(self):
-        True
 
     def readIsomorphicGraph(self, file):
         graph = ConjunctiveGraph(identifier="")
@@ -72,21 +71,9 @@ class QuitDiff:
 
         return graphDict
 
-    def diff(self, path, oldFile, newFile, diffFormat="sparql"):
-        self.difftool(oldFile, newFile, None, None, diffFormat=diffFormat)
-
-    def difftool(self, local, remote, merged, base, diffFormat="sparql"):
-        if local:
-            self.local = self.readIsomorphicGraph(local)
-
-        if remote:
-            self.remote = self.readIsomorphicGraph(remote)
-
-        if merged:
-            self.merged = self.readIsomorphicGraph(merged)
-
-        if base:
-            self.base = self.readIsomorphicGraph(base)
+    def simple_diff(self, local, remote, diffFormat="sparql"):
+        self.local = self.readIsomorphicGraph(local)
+        self.remote = self.readIsomorphicGraph(remote)
 
         add = {}
         remove = {}
@@ -114,3 +101,41 @@ class QuitDiff:
 
         diffSerializer = diff()
         print(diffSerializer.serialize(add, remove))
+
+    def threeway_diff(self, local, remote, base, diffFormat="sparql"):
+        """
+        Implements the three way diff on datasets.
+        """
+        aG = self.readIsomorphicGraph(local)
+        bG = self.readIsomorphicGraph(remote)
+        baseG = self.readIsomorphicGraph(base)
+
+        aGraphUris = set(aG.keys())
+        bGraphUris = set(bG.keys())
+        baseGraphUri = set(baseG.keys())
+
+        addAGraphs = aGraphUris - baseGraphUri
+        delAGraphs = baseGraphUri - aGraphUris
+        addBGraphs = bGraphUris - baseGraphUri
+        delBGraphs = baseGraphUri - bGraphUris
+
+        addA = {uri: aG[uri] for uri in addAGraphs}
+        addB = {uri: bG[uri] for uri in addBGraphs}
+        delA = {uri: baseG[uri] for uri in delAGraphs}
+        delB = {uri: baseG[uri] for uri in delBGraphs}
+
+        intersect = aGraphUris.intersection(bGraphUris)
+
+        for uri in intersect:
+            threeway_set = self.threeway_graph_diff(aG[uri], bG[uri], baseG[uri])
+            addA[uri] = threeway_set["addA"]
+            addB[uri] = threeway_set["addB"]
+            delA[uri] = threeway_set["delA"]
+            delB[uri] = threeway_set["delB"]
+
+        module = diffFormat.title() + "Diff"
+        diff = getattr(import_module("quit_diff.serializer." + module), module)
+
+        diffSerializer = diff()
+        print(diffSerializer.serialize(addA, delA))
+        print(diffSerializer.serialize(addB, delB))

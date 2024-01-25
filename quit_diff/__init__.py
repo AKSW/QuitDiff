@@ -1,30 +1,43 @@
-import argparse
+import click
 from .QuitDiff import QuitDiff
 
 
-def main(args=None):
-    parser = argparse.ArgumentParser()
-    parser.add_argument("path", nargs="?", type=str)
-    parser.add_argument("oldFile", nargs="?", type=str)
-    parser.add_argument("oldHex", nargs="?", type=str)
-    parser.add_argument("oldMode", nargs="?", type=str)
-    parser.add_argument("newFile", nargs="?", type=str)
-    parser.add_argument("newHex", nargs="?", type=str)
-    parser.add_argument("newMode", nargs="?", type=str)
-    parser.add_argument("--diffFormat", default="sparql", type=str)
-    parser.add_argument("--local", type=str)
-    parser.add_argument("--remote", type=str)
-    parser.add_argument("--merged", type=str)
-    parser.add_argument("--base", type=str)
+@click.command()
+@click.option('--format', '--diffFormat', envvar="QUIT_DIFF_FORMAT", default="sparql", help='The serialization format to represent the differences, e.g. sparql [default], changeset, eccrev, topbraid')
+@click.option('--base', envvar="BASE", default=None, help='The last common base version, to perform a three-way-merge')
+@click.option('--merged', envvar="MERGED", default=None, help='merged')
+@click.argument('local', envvar="LOCAL")
+@click.argument('remote', envvar="REMOTE")
+def cli(mode: str, format: str, base: str, merged: str, local: str, remote: str):
+    """
+    Compare two RDF datasets with each other.
 
-    args = parser.parse_args()
+    LOCAL is the first dataset to compare, REMOTE the second dataset to compare
+
+    This can also be setup as [git-difftool](https://git-scm.com/docs/git-difftool)
+    """
 
     quitdiff = QuitDiff()
-    if args.path:
-        quitdiff.diff(args.path, args.oldFile, args.newFile, diffFormat=args.diffFormat)
-    elif args.local and args.remote:
-        quitdiff.difftool(
-            args.local, args.remote, args.merged, args.base, diffFormat=args.diffFormat
-        )
-    else:
-        exit(1)
+    quitdiff.simple_diff(local, remote, diffFormat=format)
+
+
+@click.command()
+@click.option('--format', '--diffFormat', default="sparql", help='The serialization format to represent the differences, e.g. sparql [default], changeset, eccrev, topbraid')
+@click.argument("path")
+@click.argument("oldFile")
+@click.argument("oldHex")
+@click.argument("oldMode")
+@click.argument("newFile")
+@click.argument("newHex")
+@click.argument("newMode")
+def git_diff(path: str, oldfile: str, oldhex: str, oldmode: str, newfile: str, newhex: str, newmode: str, format: str):
+    """
+    This command can be setup as external diff driver for git.
+    For the details please see the git documentation on [gitattributes](https://git-scm.com/docs/gitattributes#_defining_an_external_diff_driver)
+    """
+
+    quitdiff = QuitDiff()
+    quitdiff.simple_diff(oldfile, newfile, diffFormat=format)
+
+if __name__ == '__main__':
+    cli()
