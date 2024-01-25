@@ -12,8 +12,9 @@ repository = "https://github.com/AKSW/QuitDiff"
 "Bug Tracker" = "https://github.com/AKSW/QuitDiff/issues"
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.9"
 rdflib = "^7.0.0"
+click = "^8.1.7"
 
 [tool.poetry.scripts]
 quit-diff = "quit_diff:main"
