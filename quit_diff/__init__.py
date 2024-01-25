@@ -3,6 +3,7 @@ from .QuitDiff import QuitDiff
 
 
 @click.command()
+@click.option('--mode', envvar="QUIT_DIFF_MODE", default="simple", help='The diff mode can be simple delta comparison (simple, default), or a three way diff (threeway)')
 @click.option('--format', '--diffFormat', envvar="QUIT_DIFF_FORMAT", default="sparql", help='The serialization format to represent the differences, e.g. sparql [default], changeset, eccrev, topbraid')
 @click.option('--base', envvar="BASE", default=None, help='The last common base version, to perform a three-way-merge')
 @click.option('--merged', envvar="MERGED", default=None, help='merged')
@@ -18,7 +19,10 @@ def cli(mode: str, format: str, base: str, merged: str, local: str, remote: str)
     """
 
     quitdiff = QuitDiff()
-    quitdiff.simple_diff(local, remote, diffFormat=format)
+    if mode == "simple":
+        quitdiff.simple_diff(local, remote, diffFormat=format)
+    elif mode == "threeway":
+        quitdiff.threeway_diff(local, remote, base, diffFormat=format)
 
 
 @click.command()

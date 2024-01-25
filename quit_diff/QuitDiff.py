@@ -139,3 +139,41 @@ class QuitDiff:
         diffSerializer = diff()
         print(diffSerializer.serialize(addA, delA))
         print(diffSerializer.serialize(addB, delB))
+
+    def threeway_graph_diff(self, local: Graph, remote: Graph, base: Graph) -> Dict:
+        """
+        Implements the three way diff on datasets.
+        """
+
+        a = set(local.triples((None, None, None)))
+        b = set(remote.triples((None, None, None)))
+        base_set = set(base.triples((None, None, None)))
+
+        addA = a - base_set
+        delA = base_set - a
+        addB = b - base_set
+        delB = base_set - b
+
+        addAGraph = Graph()
+        for t in addA:
+            addAGraph.add(t)
+
+        delAGraph = Graph()
+        for t in delA:
+            delAGraph.add(t)
+
+        addBGraph = Graph()
+        for t in addB:
+            addBGraph.add(t)
+
+        delBGraph = Graph()
+        for t in delB:
+            delBGraph.add(t)
+
+
+        return {
+            "addA": addAGraph,
+            "delA": delAGraph,
+            "addB": addBGraph,
+            "delB": delBGraph,
+        }
