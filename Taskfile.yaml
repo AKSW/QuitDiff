@@ -1,0 +1,19 @@
+version: '3'
+
+tasks:
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - poetry install
+      - pipx install -e .
+
+  check:
+    desc: Execute the linter
+    cmds:
+      - poetry run ruff check
+
+  format:
+    desc: Run formater
+    cmds:
+      - poetry run ruff format
