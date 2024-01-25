@@ -6,6 +6,7 @@ tasks:
     desc: Install dependencies
     cmds:
       - poetry install
+      - pipx install -e .
 
   check:
     desc: Execute the linter
