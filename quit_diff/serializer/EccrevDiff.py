@@ -44,7 +44,7 @@ class EccrevDiff(metaclass=ABCMeta):
                     for triple in add[graphUri]:
                         g.add(triple + (insertGraphName,))
 
-        return g.serialize(format="trig").decode("utf-8")
+        return g.serialize(format="trig")
 
 
 EccrevDiff.register(QuitDiffSerializer)
