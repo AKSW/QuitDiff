@@ -51,7 +51,7 @@ class ChangesetDiff(metaclass=ABCMeta):
                         g.add((insertGraphName, RDF.object, triple[2]))
                         i += 1
 
-        return g.serialize(format="turtle").decode("utf-8")
+        return g.serialize(format="turtle")
 
 
 ChangesetDiff.register(QuitDiffSerializer)

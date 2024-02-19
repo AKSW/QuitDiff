@@ -12,15 +12,15 @@ class SparqlDiff(metaclass=ABCMeta):
         for graphUri, graph in delete.items():
             if len(graph) > 0:
                 if str(graphUri) != 'http://quitdiff.default/':
-                    deleteQuadPattern += "\ngraph <%s> {\n%s\n}\n" % (graphUri, graph.serialize(format="nt").decode("utf-8").strip())
+                    deleteQuadPattern += "\ngraph <%s> {\n%s\n}\n" % (graphUri, graph.serialize(format="nt").strip())
                 else:
-                    deleteQuadPattern += "\n%s\n" % (graph.serialize(format="nt").decode("utf-8").strip())
+                    deleteQuadPattern += "\n%s\n" % (graph.serialize(format="nt").strip())
         for graphUri, graph in add.items():
             if len(graph) > 0:
                 if str(graphUri) != 'http://quitdiff.default/':
-                    insertQuadPattern += "\ngraph <%s> {\n%s\n}\n" % (graphUri, graph.serialize(format="nt").decode("utf-8").strip())
+                    insertQuadPattern += "\ngraph <%s> {\n%s\n}\n" % (graphUri, graph.serialize(format="nt").strip())
                 else:
-                    insertQuadPattern += "\n%s\n" % (graph.serialize(format="nt").decode("utf-8").strip())
+                    insertQuadPattern += "\n%s\n" % (graph.serialize(format="nt").strip())
 
         query = ""
         if deleteQuadPattern:
