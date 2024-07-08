@@ -1,6 +1,14 @@
+---
 version: '3'
 
 tasks:
+
+  default:
+    summary: |
+      Just a list of documented tasks.
+    silent: true
+    cmds:
+      - task --list
 
   install:
     desc: Install dependencies
