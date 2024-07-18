@@ -2,57 +2,70 @@
 
 ## Requirements
 
-For using QuitDiff you need to have python version 3 installed.
+For using QuitDiff you need to have python version 3 installed (3.9 or later).
 
 To install the required packages use pip:
 
-    pip install -r requirements.txt
+```
+pipx install quit-diff
+```
 
 ## Use as `git-difftool`
 
 Add one of the following sections to you `~/.gitconfig` (in your home directory) or `.git/config` (in your git working directory).
 
-    [difftool "quitdiff"]
-        cmd = quitdiff.py --local=\"$LOCAL\" --remote=\"$REMOTE\" --merged=\"$MERGES\" --base=\"$BASE\"
-
-
-    [difftool "quitdiff-sparql"]
-        cmd = quitdiff.py --diffFormat sparql --local=\"$LOCAL\" --remote=\"$REMOTE\" --merged=\"$MERGES\" --base=\"$BASE\"
-
-    [difftool "quitdiff-eccrev"]
-        cmd = quitdiff.py --diffFormat eccrev --local=\"$LOCAL\" --remote=\"$REMOTE\" --merged=\"$MERGES\" --base=\"$BASE\"
+```
+[difftool "quit-diff"]
+    cmd = quit-diff --base=\"$BASE\" \"$LOCAL\" \"$REMOTE\"
+```
 
 The git diff tool can then called with one of the following commands
 
-    $ git difftool -t quitdiff
-    $ git difftool -t quitdiff HEAD~0..HEAD~2
+```
+$ git difftool -t quit-diff
+$ git difftool -t quit-diff HEAD~0..HEAD~2
+```
 
-## Use as `git-diff`
+To specify the diff format you can set the `QUIT_DIFF_FORMAT` environment variable.
+
+```
+$ QUIT_DIFF_FORMAT=changeset git difftool -t quit-diff HEAD^
+$ QUIT_DIFF_FORMAT=sparql git difftool -t quit-diff HEAD^
+$ QUIT_DIFF_FORMAT=eccrev git difftool -t quit-diff HEAD^
+```
+
+## Use as `git diff`
 
 Add the following sections to you `~/.gitconfig` (in your home directory) or `.git/config` (in your git working directory).
 
-    [diff "quitdiff"]
-        command = quitdiff.py
+```
+[diff "quit-diff"]
+    command = quit-diff
+```
 
 and the following to `.gitattributes`  (in your git working directory).
 
-    *.nq diff=quitdiff
-    *.trig diff=quitdiff
-    *.nt diff=quitdiff
-    *.ttl diff=quitdiff
-    *.rdf diff=quitdiff
+```
+*.nq diff=quit-diff
+*.trig diff=quit-diff
+*.nt diff=quit-diff
+*.ttl diff=quit-diff
+*.rdf diff=quit-diff
+```
 
 git diff can then called with one of the following commands
 
-    $ git diff
-    $ git diff HEAD~0..HEAD~2
+```
+$ git diff
+$ git diff HEAD~0..HEAD~2
+```
 
 
 # Command line parameters
 This tool can be used for git-diff or as git-difftool
 
 ## git-diff:
-  if using as git-diff, the parameters are: `path old-file old-hex old-mode new-file new-hex new-mode`
+if using as git-diff, the parameters are: `path old-file old-hex old-mode new-file new-hex new-mode`
 
 ## git-difftool:
 https://git-scm.com/docs/git-difftool
@@ -66,7 +79,7 @@ https://git-scm.com/docs/git-difftool
 
 # License
 
-Copyright (C) 2017 Natanael Arndt <http://aksw.org/NatanaelArndt> and Norman Radtke <http://aksw.org/NormanRadtke>
+Copyright (C) 2024 Natanael Arndt <http://aksw.org/NatanaelArndt> and Norman Radtke <http://aksw.org/NormanRadtke>
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
