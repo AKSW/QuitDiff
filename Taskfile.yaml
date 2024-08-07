@@ -16,6 +16,12 @@ tasks:
       - poetry install
       - pipx install -e .
 
+  install:git:
+    desc: Install as difftool and diff command for git
+    cmds:
+      - |
+        echo "Pleases see the \"Use as `git-difftool`\" and \"Use as `git diff`\" sections in the README"
+
   check:
     desc: Execute the linter
     cmds:
